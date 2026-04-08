@@ -1,6 +1,5 @@
 package parra.mario.logintest
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -32,21 +31,23 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import parra.mario.logintest.ui.theme.LoginTestTheme
 
-class MainActivity : ComponentActivity() {
-
+class RegistroActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             LoginTestTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    PantallaInicio(auth,
+                    PantallaRegistro(
+                        auth,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -57,9 +58,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun PantallaInicio(auth: FirebaseAuth, modifier: Modifier = Modifier) {
+fun registrar(){
 
+}
+
+@Composable
+fun PantallaRegistro(auth: FirebaseAuth, modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
     var correo by remember{ mutableStateOf("") }
@@ -70,7 +74,8 @@ fun PantallaInicio(auth: FirebaseAuth, modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-
+        Text(text = "REGISTRO", fontSize = 30.sp)
+        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = correo,
@@ -97,40 +102,32 @@ fun PantallaInicio(auth: FirebaseAuth, modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Button( onClick = {
-                val intent = Intent(context, RegistroActivity::class.java)
-                context.startActivity(intent)
+
             }
 
-            ) { Text(text = "Registrarse")}
+            ) { Text(text = "Cancelar")}
 
 
 
             Button( onClick = {
+
                 if(correo.isNotEmpty() && contra.isNotEmpty()){
-                    auth.signInWithEmailAndPassword(correo, contra)
+                    auth.createUserWithEmailAndPassword(correo,contra)
                         .addOnCompleteListener { task ->
                             if(task.isSuccessful){
-                                Toast.makeText(context, "Ingresando...", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(context, PrincipalActivity::class.java)
-                                context.startActivity(intent)
+                                Toast.makeText(context, "Se agregó el usuario", Toast.LENGTH_SHORT).show()
                             }else{
-                                Toast.makeText(context, "Datos incorrectos", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "No se puedo registrar", Toast.LENGTH_SHORT).show()
                             }
                         }
                 }
+
             }
 
-            ) { Text(text = "Ingresar")}
+            ) { Text(text = "Registrarse")}
 
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
 
-        TextButton(onClick = {
-            val intent = Intent(context, ContrasenaActivity::class.java)
-            context.startActivity(intent)
-        }) {
-            Text(text="¿Olvidaste tu contraseña?")
-        }
     }
 }

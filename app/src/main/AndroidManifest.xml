@@ -12,6 +12,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginTest">
         <activity
+            android:name=".ContrasenaActivity"
+            android:exported="false"
+            android:label="@string/title_activity_contrasena"
+            android:theme="@style/Theme.LoginTest" />
+        <activity
+            android:name=".PrincipalActivity"
+            android:exported="false"
+            android:label="@string/title_activity_principal"
+            android:theme="@style/Theme.LoginTest" />
+        <activity
+            android:name=".ui.theme.InicioActivity"
+            android:exported="false"
+            android:label="@string/title_activity_inicio"
+            android:theme="@style/Theme.LoginTest" />
+        <activity
+            android:name=".RegistroActivity"
+            android:exported="false"
+            android:label="@string/title_activity_registro"
+            android:theme="@style/Theme.LoginTest" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

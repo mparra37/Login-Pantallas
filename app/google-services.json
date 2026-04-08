@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "963166384056",
+    "project_id": "usuarios-133c4",
+    "storage_bucket": "usuarios-133c4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963166384056:android:d060998632a05f1486e94d",
+        "android_client_info": {
+          "package_name": "parra.mario.logintest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvlcqah_za0W4T4umyugvARgk94MfXV5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

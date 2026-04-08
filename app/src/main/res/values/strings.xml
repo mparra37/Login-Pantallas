@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">LoginTest</string>
+    <string name="title_activity_registro">RegistroActivity</string>
+    <string name="title_activity_inicio">InicioActivity</string>
+    <string name="title_activity_principal">PrincipalActivity</string>
+    <string name="title_activity_contrasena">ContrasenaActivity</string>
 </resources>
