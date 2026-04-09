@@ -1,5 +1,6 @@
 package parra.mario.logintest
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -35,10 +36,15 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.database
 import parra.mario.logintest.ui.theme.LoginTestTheme
 
 class RegistroActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
+
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +53,7 @@ class RegistroActivity : ComponentActivity() {
             LoginTestTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     PantallaRegistro(
-                        auth,
+                        auth, database,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -55,19 +61,20 @@ class RegistroActivity : ComponentActivity() {
         }
 
         auth = Firebase.auth
+        database = Firebase.database.reference
     }
 }
 
-fun registrar(){
 
-}
 
 @Composable
-fun PantallaRegistro(auth: FirebaseAuth, modifier: Modifier = Modifier) {
+fun PantallaRegistro(auth: FirebaseAuth, database: DatabaseReference, modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
     var correo by remember{ mutableStateOf("") }
     var contra by remember { mutableStateOf("") }
+    var nombre by remember { mutableStateOf("") }
+    var edad by  remember { mutableStateOf("") }
     Column(
         modifier = modifier.fillMaxSize().padding(32.dp),
         verticalArrangement = Arrangement.Center,
@@ -75,6 +82,25 @@ fun PantallaRegistro(auth: FirebaseAuth, modifier: Modifier = Modifier) {
     ) {
 
         Text(text = "REGISTRO", fontSize = 30.sp)
+
+        OutlinedTextField(
+            value = nombre,
+            onValueChange = { nombre = it },
+            label = { Text(text = "Nombre") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = edad,
+            onValueChange = { edad = it },
+            label = { Text(text = "Edad") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
@@ -116,6 +142,19 @@ fun PantallaRegistro(auth: FirebaseAuth, modifier: Modifier = Modifier) {
                         .addOnCompleteListener { task ->
                             if(task.isSuccessful){
                                 Toast.makeText(context, "Se agregó el usuario", Toast.LENGTH_SHORT).show()
+                                val usuario = Usuario(nombre, correo, edad.toInt())
+                                val userID = auth.currentUser?.uid ?: ""
+                                database.child("usuarios").child(userID).setValue(usuario)
+
+
+
+                                Toast.makeText(context, "Se agregó el usuario", Toast.LENGTH_SHORT).show()
+
+                                val intent = Intent(context, PrincipalActivity::class.java)
+                                intent.putExtra("nombre", nombre)
+                                intent.putExtra("correo", correo)
+                                context.startActivity(intent)
+
                             }else{
                                 Toast.makeText(context, "No se puedo registrar", Toast.LENGTH_SHORT).show()
                             }
