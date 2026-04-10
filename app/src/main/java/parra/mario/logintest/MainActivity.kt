@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.database.database
 import parra.mario.logintest.ui.theme.LoginTestTheme
 
 class MainActivity : ComponentActivity() {
@@ -43,6 +44,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Write a message to the database
+        val database = Firebase.database
+        val myRef = database.getReference("message")
+
+        myRef.setValue("Hello, World!")
+
+        auth = Firebase.auth
+
+        if(auth.currentUser != null){
+            val intent = Intent(this, PrincipalActivity::class.java)
+            startActivity(intent)
+            //finish()
+        }
+
         setContent {
             LoginTestTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -53,7 +69,7 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        auth = Firebase.auth
+
     }
 }
 
@@ -111,7 +127,9 @@ fun PantallaInicio(auth: FirebaseAuth, modifier: Modifier = Modifier) {
                         .addOnCompleteListener { task ->
                             if(task.isSuccessful){
                                 Toast.makeText(context, "Ingresando...", Toast.LENGTH_SHORT).show()
+                                val userID = auth.currentUser?.uid ?: ""
                                 val intent = Intent(context, PrincipalActivity::class.java)
+                                intent.putExtra("userid", userID)
                                 context.startActivity(intent)
                             }else{
                                 Toast.makeText(context, "Datos incorrectos", Toast.LENGTH_SHORT).show()

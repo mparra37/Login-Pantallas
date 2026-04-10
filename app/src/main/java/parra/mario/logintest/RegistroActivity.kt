@@ -151,8 +151,9 @@ fun PantallaRegistro(auth: FirebaseAuth, database: DatabaseReference, modifier: 
                                 Toast.makeText(context, "Se agregó el usuario", Toast.LENGTH_SHORT).show()
 
                                 val intent = Intent(context, PrincipalActivity::class.java)
-                                intent.putExtra("nombre", nombre)
-                                intent.putExtra("correo", correo)
+                                //intent.putExtra("nombre", nombre)
+                                //intent.putExtra("correo", correo)
+                                intent.putExtra("userid", userID)
                                 context.startActivity(intent)
 
                             }else{
